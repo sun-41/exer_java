@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.commute">
+	<resultMap id="commuteResult" type="commuteVO">
+		<result property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="job" column="job" />
+		<result property="workweek" column="workweek" />
+	</resultMap>
+
+
+	<select id="selectAllCommuteList" resultMap="commuteResult">
+      <![CDATA[
+         select * from t_commute 
+         order by name desc	 	
+      ]]>
+	</select>
+
+	<select id="selectName" resultType="String">
+    <![CDATA[
+	select name from t_commute
+	where id = 'qwe'		
+    ]]>
+	</select>
+
+	<select id="selectCommuteById" resultType="commuteVO"
+		parameterType="String">
+      <![CDATA[
+         select * from t_commute
+         where
+         id=#{id}			
+      ]]>
+	</select>
+
+	<insert id="insertCommute" parameterType="commuteVO">
+		<![CDATA[
+		 insert into t_commute(id, name, job)
+		 values(#{id}, #{name,jdbcType=VARCHAR}, #{job,jdbcType=VARCHAR})
+		]]>
+	</insert>
+
+	<update id="updateCommute" parameterType="commuteVO">
+     <![CDATA[
+	     update t_commute
+	     set name=#{name,jdbcType=VARCHAR}, job=#{job,jdbcType=VARCHAR}
+	     where
+	     id=#{id}
+      ]]>
+	</update>
+
+	<delete id="deleteCommute" parameterType="String">
+	<![CDATA[
+	   delete from  t_commute
+	   where
+	   id=#{id}
+	]]>
+	</delete>
+
+
+	<!-- 동적 SQL문 -->
+	<select id="searchCommute" parameterType="commuteVO"
+		resultMap="commuteResult">
+      <![CDATA[
+          select * from t_commute
+      ]]>
+		<where>
+			<if test=" name != ''  and  name != null">
+				name=#{name}
+			</if>
+			<if test="job != ''  and job != null ">
+				and job = #{job}
+			</if>
+		</where>
+		order by job desc
+	</select>
+
+	<!-- <sql id="a"> <![CDATA[ select * from t_member ]]> </sql> -->
+
+	<!-- <select id="searchMember" parameterType="memberVO" resultMap="memResult"> 
+		<include refid="a" /> <![CDATA[ select * from t_member ]]> <where> <choose> 
+		<when test="name != '' and name != null and email != '' and email != null"> 
+		name=#{name} and email=#{email} </when> <when test="name != '' and name != 
+		null"> name = #{name} </when> <when test="email !='' and email != null"> 
+		email = #{email} </when> </choose> </where> order by joinDate desc </select> -->
+
+	<select id="foreachSelect" resultMap="commuteResult"
+		parameterType="java.util.Map">
+		<!-- <include refid="a" /> -->
+      <![CDATA[
+        select * from t_commute       
+      ]]>
+		where name in
+		<foreach item="item" collection="list" open="(" separator=","
+			close=")">
+			#{item}
+		</foreach>
+		order by job desc
+	</select>
+
+	<insert id="foreachInsert" parameterType="java.util.Map">
+		<foreach item="item" collection="list" open="INSERT ALL"
+			separator=" " close="SELECT * FROM DUAL">
+			INTO t_commute(id, name, job, attendance, absent)
+			values(#{id}, #{name,jdbcType=VARCHAR}, #{job,jdbcType=VARCHAR})
+		</foreach>
+	</insert>
+
+	<!-- like 검색 -> <select id="selectLike" resultMap="memResult" parameterType="String" 
+		> <![CDATA[ select * from t_commute where name like '%' || #{name} || '%' 
+		]]> </select -->
+</mapper>

@@ -1,0 +1,7 @@
+eclipse.preferences.version=1
+encoding//src/main/java/com/myspring/projectEx/board/controller/BoardControllerImpl.java=UTF-8
+encoding//src/main/java/com/myspring/projectEx/board/service/BoardServiceImpl.java=UTF-8
+encoding//src/main/java/com/myspring/projectEx/board/vo/ArticleVO.java=UTF-8
+encoding//src/main/java/com/myspring/projectEx/commute/controller/CommuteControllerImpl.java=UTF-8
+encoding//src/main/java/com/myspring/projectEx/commute/vo/ArticleworkVO.java=UTF-8
+encoding//src/main/java/com/myspring/projectEx/member/controller/MemberControllerImpl.java=UTF-8
